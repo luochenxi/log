@@ -3,12 +3,14 @@ package main
 import (
 	"fmt"
 
-	"github.com/lexkong/log"
-	"github.com/lexkong/log/lager"
+	"github.com/luochenxi/log"
+	"github.com/luochenxi/log/lager"
 )
 
 func main() {
+	//log.Init()
 	log.InitWithFile("log.yaml")
+
 
 	for i := 0; i < 1; i++ {
 		log.Infof("Hi %s, system is starting up ...", "paas-bot")

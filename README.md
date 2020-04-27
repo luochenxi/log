@@ -1,6 +1,6 @@
 ## 简介
 
-该日志包参考 [paas-lager](https://github.com/ServiceComb/paas-lager)，做了一些便捷性上的改动，功能完全一样，只不过该日志包更便捷些。
+该日志包参考 [paas-lager](https://github.com/ServiceComb/paas-lager), [lexkong/log](https://github.com/lexkong/log) 做了一些便捷性上的改动，功能完全一样，只不过该日志包更便捷些。
 
 Go开发中常用的log包有：
 
@@ -21,8 +21,8 @@ package main
 import (
 	"fmt"
 
-	"github.com/lexkong/log"
-	"github.com/lexkong/log/lager"
+	"github.com/luochenxi/log"
+	"github.com/luochenxi/log/lager"
 )
 
 func main() {
@@ -61,6 +61,7 @@ rollingPolicy: size # size, daily
 log_rotate_date: 1
 log_rotate_size: 1
 log_backup_count: 7
+color_log: ture # ture, false
 ```
 
 ## 日志参数
@@ -73,3 +74,4 @@ log_backup_count: 7
 + `log_rotate_date`: rotate转存时间，配合`rollingPolicy: daily`使用
 + `log_rotate_size`: rotate转存大小，配合`rollingPolicy: size`使用
 + `log_backup_count`:当日志文件达到转存标准时，log系统会将该日志文件进行压缩备份，这里指定了备份文件的最大个数。
++ `color_log`: 彩色日志输出，当stdout方式输出日志接入ELK时，DEBUG和ERROR因带有shell彩色输出，无法正常解析。用`true`会输出彩色日志，`false`不会输出彩色日志

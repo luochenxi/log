@@ -8,7 +8,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/lexkong/log/lager"
+	"github.com/luochenxi/log/lager"
 )
 
 const (
@@ -29,7 +29,8 @@ type Config struct {
 	RsyslogNetwork string
 	RsyslogAddr    string
 
-	LogFormatText bool
+	LogFormatText  bool
+	ColorLog	   bool
 }
 
 var config = DefaultConfig()
@@ -86,6 +87,7 @@ func LagerInit(c Config) {
 		config.Writers = c.Writers
 	}
 	config.LogFormatText = c.LogFormatText
+	config.ColorLog = c.ColorLog
 	RegisterWriter("stdout", os.Stdout)
 	var file io.Writer
 	var err error
@@ -135,7 +137,7 @@ func NewLoggerExt(component string, appGUID string) lager.Logger {
 		if !ok {
 			log.Panic("Unknow writer: ", sink)
 		}
-		sink := lager.NewReconfigurableSink(lager.NewWriterSink(sink, writer, lager.DEBUG), lagerLogLevel)
+		sink := lager.NewReconfigurableSink(lager.NewWriterSink(sink, writer, lager.DEBUG, config.ColorLog), lagerLogLevel)
 		logger.RegisterSink(sink)
 	}
 

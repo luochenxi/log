@@ -5,7 +5,7 @@ import (
 	"io"
 	"sync"
 
-	"github.com/lexkong/log/lager/color"
+	"github.com/luochenxi/log/lager/color"
 )
 
 const logBufferSize = 1024
@@ -18,19 +18,21 @@ type Sink interface {
 }
 
 type writerSink struct {
-	writer      io.Writer
-	minLogLevel LogLevel
-	name        string
-	writeL      *sync.Mutex
+	writer       io.Writer
+	minLogLevel  LogLevel
+	name         string
+	writeL       *sync.Mutex
+	colorLog     bool
 }
 
 //NewWriterSink is function which returns new struct object
-func NewWriterSink(name string, writer io.Writer, minLogLevel LogLevel) Sink {
+func NewWriterSink(name string, writer io.Writer, minLogLevel LogLevel, colorLog bool) Sink {
 	return &writerSink{
-		writer:      writer,
-		minLogLevel: minLogLevel,
-		writeL:      new(sync.Mutex),
-		name:        name,
+		writer:       writer,
+		minLogLevel:  minLogLevel,
+		writeL:       new(sync.Mutex),
+		name:         name,
+		colorLog:	  colorLog,
 	}
 }
 
@@ -38,7 +40,7 @@ func (sink *writerSink) Log(level LogLevel, log []byte) {
 	if level < sink.minLogLevel {
 		return
 	}
-	if sink.name == "stdout" {
+	if sink.name == "stdout" && sink.colorLog == true {
 		if bytes.Contains(log, []byte("WARN")) {
 			log = bytes.Replace(log, []byte("WARN"), color.WarnByte, -1)
 		} else if bytes.Contains(log, []byte("ERROR")) {

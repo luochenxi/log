@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/lexkong/log/lager"
+	"github.com/luochenxi/log/lager"
 	"gopkg.in/yaml.v2"
 )
 
@@ -30,6 +30,7 @@ type Lager struct {
 	LogRotateDate  int    `yaml:"log_rotate_date"`
 	LogRotateSize  int    `yaml:"log_rotate_size"`
 	LogBackupCount int    `yaml:"log_backup_count"`
+	ColorLog	   bool   `yaml:"color_log"`
 }
 
 //PassLagerCfg is the struct for lager information(passlager.yaml)
@@ -42,6 +43,7 @@ type PassLagerCfg struct {
 	LogRotateDate  int    `yaml:"log_rotate_date"`
 	LogRotateSize  int    `yaml:"log_rotate_size"`
 	LogBackupCount int    `yaml:"log_backup_count"`
+	ColorLog	   bool	  `yaml:"color_log"`
 }
 
 // Logger is the global variable for the object of lager.Logger
@@ -55,7 +57,7 @@ var PassLagerDefinition *PassLagerCfg = DefaultLagerDefinition()
 
 // Initialize Build constructs a *Lager.Logger with the configured parameters.
 func Initialize(writers, loggerLevel, loggerFile, rollingPolicy string, logFormatText bool,
-	LogRotateDate, LogRotateSize, LogBackupCount int) {
+	LogRotateDate, LogRotateSize, LogBackupCount int, ColorLog bool) {
 	lag := &Lager{
 		Writers:        writers,
 		LoggerLevel:    loggerLevel,
@@ -65,6 +67,7 @@ func Initialize(writers, loggerLevel, loggerFile, rollingPolicy string, logForma
 		LogRotateDate:  LogRotateDate,
 		LogRotateSize:  LogRotateSize,
 		LogBackupCount: LogBackupCount,
+		ColorLog:		ColorLog,
 	}
 
 	Logger = newLog(lag)
@@ -92,6 +95,7 @@ func newLog(lag *Lager) lager.Logger {
 		LoggerLevel:   lag.LoggerLevel,
 		LoggerFile:    logFilePath,
 		LogFormatText: lag.LogFormatText,
+		ColorLog:	   lag.ColorLog,
 	})
 
 	logger := NewLogger(lag.LoggerFile)
@@ -183,6 +187,7 @@ func DefaultLagerDefinition() *PassLagerCfg {
 		LogRotateDate:  1,
 		LogRotateSize:  10,
 		LogBackupCount: 7,
+		ColorLog:       true,
 	}
 
 	return &cfg
@@ -192,7 +197,7 @@ func Init() error {
 	Initialize(PassLagerDefinition.Writers, PassLagerDefinition.LoggerLevel,
 		PassLagerDefinition.LoggerFile, PassLagerDefinition.RollingPolicy,
 		PassLagerDefinition.LogFormatText, PassLagerDefinition.LogRotateDate,
-		PassLagerDefinition.LogRotateSize, PassLagerDefinition.LogBackupCount)
+		PassLagerDefinition.LogRotateSize, PassLagerDefinition.LogBackupCount, PassLagerDefinition.ColorLog)
 
 	return nil
 }

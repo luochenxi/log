@@ -6,11 +6,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/lexkong/lager"
-	"github.com/lexkong/lager/lagertest"
-
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	"github.com/luochenxi/lager"
+	"github.com/luochenxi/lager/lagertest"
 )
 
 var _ = Describe("Logger", func() {

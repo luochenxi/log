@@ -1,11 +1,9 @@
 package lager_test
 
 import (
-	"github.com/lexkong/lager"
-	"github.com/lexkong/lager/lagertest"
+	"github.com/luochenxi/lager"
+	"github.com/luochenxi/lager/lagertest"
 
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/gbytes"
 )
 
